@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지속 가능한 지구를 위한 물리 법칙 대토론회</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+        }
+        h2 {
+            font-size: 2em;
+            margin-top: 40px;
+        }
+        h3 {
+            font-size: 1.4em;
+            color: #3498db;
+            border-bottom: none;
+        }
+        .speech-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            border-left: 5px solid #3498db;
+            background-color: #ecf5fb;
+            border-radius: 5px;
+            transition: box-shadow 0.3s ease;
+        }
+        .speech-block:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        p {
+            margin-bottom: 10px;
+        }
+        .law-intro {
+            font-style: italic;
+            color: #2980b9;
+            background-color: #d6eaf8;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        button {
+            cursor: pointer;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-left: 10px;
+            transition: background-color 0.2s ease;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        .full-listen-buttons {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 8px;
+        }
+        .full-listen-buttons button {
+            background-color: #007bff;
+            padding: 10px 15px;
+            font-size: 1em;
+            margin: 5px;
+        }
+        .full-listen-buttons button:hover {
+            background-color: #0056b3;
+        }
+        .chairperson {
+            background-color: #fef9e7;
+            border-left-color: #f1c40f;
+        }
+        .chairperson h3 {
+            color: #f1c40f;
+        }
+    </style>
+    <script>
+        function speak(text, lang) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // 기존 음성출력 중지
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = lang;
+                utterance.rate = 0.95;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert('죄송합니다. 이 브라우저에서는 음성 합성을 지원하지 않습니다.');
+            }
+        }
+
+        // 개별 듣기 버튼용 함수
+        function speakText(buttonElement) {
+            const textToSpeak = buttonElement.nextElementSibling.textContent;
+            const langClass = buttonElement.parentElement.className;
+            let langCode = '';
+            if (langClass.includes('lang-ko')) langCode = 'ko-KR';
+            else if (langClass.includes('lang-en')) langCode = 'en-US';
+            else if (langClass.includes('lang-ja')) langCode = 'ja-JP';
+            speak(textToSpeak, langCode);
+        }
+
+        // 전체 듣기 버튼용 함수
+        function listenToAll(langClass, langCode) {
+            const textElements = document.querySelectorAll(`.${langClass} span`);
+            let fullTextArray = [];
+            textElements.forEach(span => {
+                fullTextArray.push(span.textContent);
+            });
+            const fullText = fullTextArray.join('.\n\n');
+            speak(fullText, langCode);
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>지속 가능한 지구를 위한 물리 법칙 대토론회</h1>
+
+        <div class="full-listen-buttons">
+            <button onclick="listenToAll('lang-ko', 'ko-KR')">🇰🇷 한국어 전체 듣기</button>
+            <button onclick="listenToAll('lang-en', 'en-US')">🇬🇧 영어 전체 듣기</button>
+            <button onclick="listenToAll('lang-ja', 'ja-JP')">🇯🇵 일본어 전체 듣기</button>
+        </div>
+
+        <div class="speech-block chairperson">
+            <h3>의장 뉴턴의 제1법칙 (관성의 법칙)의 발언</h3>
+            <div class="law-intro">
+                저는 관성의 법칙입니다. 외부 힘이 없으면, 모든 것은 하던 대로 계속하려는 성질이 있지요.
+            </div>
+            <p class="lang-ko"><strong>[한국어]</strong><button onclick="speakText(this)">🔊</button><span>지금 지구와 인류는 '파괴'라는 방향으로 등속 직선 운동을 하고 있습니다. 이 거대한 관성을 멈추거나 방향을 바꾸려면, 엄청난 '외부 힘'이 필요합니다. 그 힘은 바로 우리 모두의 의지적인 실천과 강력한 정책입니다. "원래 이렇게 살아왔으니까"라는 안일한 관성에서 벗어나야 합니다. 가만히 있으면 우리는 멸망이라는 목적지를 향해 계속 나아갈 뿐입니다. 오늘 우리의 토론이 인류라는 거대한 우주선에 브레이크를 걸고, '지속가능성'이라는 새로운 방향으로 핸들을 꺾는 첫 번째 '힘'이 되기를 바랍니다.</span></p>
+            <p class="lang-en"><strong>[English]</strong><button onclick="speakText(this)">🔊</button><span>Right now, the Earth and humanity are in uniform linear motion towards 'destruction.' To stop or change the direction of this immense inertia, a tremendous 'external force' is required. That force is the willful practice of all of us and strong policies. We must break free from the complacent inertia of "we've always lived this way." If we remain still, we will only continue moving towards the destination of ruin. I hope our discussion today becomes the first 'force' to apply the brakes on the colossal spaceship of humanity and turn the wheel in the new direction of 'sustainability.'</span></p>
+            <p class="lang-ja"><strong>[日本語]</strong><button onclick="speakText(this)">🔊</button><span>今、地球と人類は「破壊」という方向へ等速直線運動をしています。この巨大な慣性を止めたり、方向を変えたりするためには、途方もない「外力」が必要です。その力とは、まさに私たち全員の意志ある実践と強力な政策です。「元々こうやって生きてきたから」という安易な慣性から抜け出さなければなりません。何もしなければ、私たちは滅亡という目的地に向かって進み続けるだけです。今日の私たちの討論が、人類という巨大な宇宙船にブレーキをかけ、「持続可能性」という新しい方向へハンドルを切る最初の「力」となることを願います。</span></p>
+        </div>
+
+        <div class="speech-block">
+            <h3>뉴턴의 제2법칙 (가속도의 법칙)의 발언</h3>
+            <div class="law-intro">
+                저는 가속도의 법칙, F=ma입니다. 변화의 속도는 힘에 비례하고, 문제의 크기에 반비례하지요.
+            </div>
+            <p class="lang-ko"><strong>[한국어]</strong><button onclick="speakText(this)">🔊</button><span>지속 가능한 사회로의 '가속도(a)'를 얻고 싶습니까? 그렇다면 작용하는 '힘(F)'을 키워야 합니다. 여기서 '질량(m)'은 인류 전체의 뿌리 깊은 소비 습관과 거대한 산업 구조입니다. 이 질량이 너무나 크기에, 작은 힘으로는 어떠한 가속도도 만들어낼 수 없습니다. 개인의 작은 실천도 중요하지만, 그것만으로는 부족합니다. 정부의 강력한 규제, 기업의 과감한 투자, 전 지구적인 협력이라는 거대한 힘(F)이 작용해야만, 우리는 비로소 의미 있는 변화의 가속도를 얻게 될 것입니다. 힘을 모아야 합니다.</span></p>
+            <p class="lang-en"><strong>[English]</strong><button onclick="speakText(this)">🔊</button><span>Do you want to gain 'acceleration (a)' towards a sustainable society? Then you must increase the applied 'force (F).' Here, the 'mass (m)' is the deep-rooted consumption habits of all humanity and the colossal industrial structure. Because this mass is so enormous, a small force cannot create any acceleration. Individual small actions are important, but they are not enough. Only when the immense force (F) of strong government regulations, bold corporate investments, and global cooperation is applied, will we finally achieve a meaningful acceleration of change. We must gather our force.</span></p>
+            <p class="lang-ja"><strong>[日本語]</strong><button onclick="speakText(this)">🔊</button><span>持続可能な社会への「加速度(a)」を得たいですか？それならば、作用する「力(F)」を大きくしなければなりません。ここでいう「質量(m)」とは、人類全体の根深い消費習慣と巨大な産業構造です。この質量があまりにも大きいため、小さな力ではいかなる加速度も生み出すことはできません。個人の小さな実践も重要ですが、それだけでは不十分です。政府の強力な規制、企業の大胆な投資、地球規模の協力という巨大な力(F)が作用してこそ、私たちは初めて意味のある変化の加速度を得ることができるでしょう。力を合わせなければなりません。</span></p>
+        </div>
+
+        <div class="speech-block">
+            <h3>뉴턴의 제3법칙 (작용과 반작용의 법칙)의 발언</h3>
+            <div class="law-intro">
+                저는 작용과 반작용의 법칙입니다. 모든 힘에는 반드시 크기가 같고 방향이 반대인 힘이 따릅니다.
+            </div>
+            <p class="lang-ko"><strong>[한국어]</strong><button onclick="speakText(this)">🔊</button><span>인류가 자연에 가한 모든 '작용'을 보십시오. 무분별한 개발, 오염 물질 배출이라는 작용은 기후 변화, 생태계 파괴라는 '반작용'을 정확히 같은 크기로 되돌려주고 있습니다. 이것은 원망할 대상이 있는 것이 아니라, 우주의 당연한 법칙입니다. 이제 우리는 '작용'의 종류를 바꿔야 합니다. 나무를 심고, 재생에너지를 만들고, 생명을 존중하는 긍정적인 작용을 해야 합니다. 그러면 자연은 반드시 생태계 회복, 깨끗한 공기, 안정된 기후라는 건강한 '반작용'으로 우리에게 보답할 것입니다.</span></p>
+            <p class="lang-en"><strong>[English]</strong><button onclick="speakText(this)">🔊</button><span>Look at all the 'actions' humanity has exerted on nature. The action of reckless development and pollution has brought back a 'reaction' of climate change and ecosystem destruction, exactly equal in magnitude. This is not something to resent; it is a natural law of the universe. We must now change the type of 'action.' We must perform positive actions like planting trees, creating renewable energy, and respecting life. Then, nature will surely reward us with a healthy 'reaction' of ecosystem recovery, clean air, and a stable climate.</span></p>
+            <p class="lang-ja"><strong>[日本語]</strong><button onclick="speakText(this)">🔊</button><span>人類が自然に加えたすべての「作用」を見てください。無分別な開発、汚染物質の排出という作用は、気候変動、生態系破壊という「反作用」を正確に同じ大きさで返しています。これは恨むべき対象があるのではなく、宇宙の当然の法則です。今、私たちは「作用」の種類を変えなければなりません。木を植え、再生可能エネルギーを作り、生命を尊重する肯定的な作用をすべきです。そうすれば、自然は必ず生態系の回復、きれいな空気、安定した気候という健康的な「反作用」で私たちに報いてくれるでしょう。</span></p>
+        </div>
+
+        <div class="speech-block">
+            <h3>만유인력의 법칙의 발언</h3>
+            <div class="law-intro">
+                저는 만유인력의 법칙입니다. 모든 것은 서로를 끌어당깁니다. 가까울수록, 무거울수록 더 강하게 말이죠.
+            </div>
+            <p class="lang-ko"><strong>[한국어]</strong><button onclick="speakText(this)">🔊</button><span>지구 위의 모든 존재는 저의 힘으로 연결되어 있습니다. 북극의 빙하와 적도의 작은 섬은 결코 무관하지 않습니다. 빙하라는 거대한 질량이 녹아내리면, 그 힘은 해수면 상승이 되어 작은 섬을 끌어당겨 삼켜버립니다. 우리는 기후 위기와의 심리적 '거리(r)'를 좁혀야 합니다. '나와 상관없는 먼 이야기'라고 생각하면 인력은 약해지지만, '바로 내 문제'라고 인식하는 순간, 위기를 해결하려는 강력한 인력이 발생합니다. 우리 모두가 지구라는 하나의 거대한 질량체임을 깨닫고 서로를 강하게 끌어안아야 합니다.</span></p>
+            <p class="lang-en"><strong>[English]</strong><button onclick="speakText(this)">🔊</button><span>All beings on Earth are connected by my force. The glaciers of the North Pole and the small islands of the equator are by no means unrelated. When the massive mass of a glacier melts, that force becomes rising sea levels, pulling in and swallowing small islands. We must shorten the psychological 'distance (r)' to the climate crisis. If you think it's a 'distant story unrelated to me,' the gravitational pull weakens. But the moment you recognize it as 'my problem,' a powerful gravitational force to solve the crisis emerges. We must realize we are all one massive body called Earth and embrace each other strongly.</span></p>
+            <p class="lang-ja"><strong>[日本語]</strong><button onclick="speakText(this)">🔊</button><span>地球上のすべての存在は、私の力で繋がっています。北極の氷河と赤道の小さな島は、決して無関係ではありません。氷河という巨大な質量が溶け出すと、その力は海面上昇となって小さな島を引き寄せ、飲み込んでしまいます。私たちは気候危機との心理的な「距離(r)」を縮めなければなりません。「自分とは関係ない遠い話」だと思えば引力は弱まりますが、「まさに自分の問題」だと認識した瞬間、危機を解決しようとする強力な引力が生まれます。私たち皆が地球という一つの巨大な質量体であることを悟り、互いを強く引き寄せ合うべきです。</span></p>
+        </div>
+
+        <div class="speech-block">
+            <h3>에너지 보존 법칙의 발언</h3>
+            <div class="law-intro">
+                저는 에너지 보존 법칙입니다. 에너지는 사라지지 않습니다. 단지 형태를 바꿀 뿐입니다.
+            </div>
+            <p class="lang-ko"><strong>[한국어]</strong><button onclick="speakText(this)">🔊</button><span>우리가 무심코 낭비하는 전기 에너지는 사라지는 것이 아닙니다. 그것은 발전소에서 태운 화석 연료의 화학 에너지가 변한 것이며, 결국 지구의 온도를 높이는 열에너지의 형태로 고스란히 남습니다. 지속가능성이란, 이 에너지 변환의 과정을 현명하게 설계하는 것입니다. 화석연료의 화학 에너지를 열에너지로 바꾸는 대신, 태양의 빛에너지를 전기에너지로, 바람의 운동에너지를 전기에너지로 바꾸는 '착한 변환'을 선택해야 합니다. 에너지는 보존되지만, 어떤 형태로 보존하느냐가 우리의 미래를 결정합니다.</span></p>
+            <p class="lang-en"><strong>[English]</strong><button onclick="speakText(this)">🔊</button><span>The electrical energy we waste carelessly does not disappear. It is transformed from the chemical energy of fossil fuels burned at power plants, and ultimately remains fully in the form of heat energy that raises the Earth's temperature. Sustainability is about wisely designing this process of energy conversion. Instead of converting the chemical energy of fossil fuels into heat energy, we must choose 'good conversions,' like turning the sun's light energy or the wind's kinetic energy into electrical energy. Energy is conserved, but the form in which it is conserved determines our future.</span></p>
+            <p class="lang-ja"><strong>[日本語]</strong><button onclick="speakText(this)">🔊</button><span>私たちが何気なく浪費する電気エネルギーは消えません。それは発電所で燃やされた化石燃料の化学エネルギーが変化したものであり、最終的には地球の温度を上げる熱エネルギーの形でそっくり残ります。持続可能性とは、このエネルギー変換の過程を賢明に設計することです。化石燃料の化学エネルギーを熱エネルギーに変える代わりに、太陽の光エネルギーを電気エネルギーに、風の運動エネルギーを電気エネルギーに変える「善良な変換」を選択すべきです。エネルギーは保存されますが、どのような形で保存するかが私たちの未来を決定します。</span></p>
+        </div>
+        
+        <div class="speech-block">
+            <h3>운동량 보존 법칙의 발언</h3>
+            <div class="law-intro">
+                저는 운동량 보존 법칙입니다. 외부의 충격이 없다면, 시스템 전체의 움직임 총량은 변하지 않습니다.
+            </div>
+            <p class="lang-ko"><strong>[한국어]</strong><button onclick="speakText(this)">🔊</button><span>지구라는 닫힌계 안에서, 인류는 '파괴'라는 방향으로 거대한 운동량을 가지고 있습니다. 이 방향을 바꾸려면 내부의 '충돌'이 필요합니다. 낡은 산업과 새로운 기술의 충돌, 기성세대와 미래 세대의 충돌, 그리고 우리 내면의 이기심과 양심의 충돌. 이 충돌을 통해 파괴적인 운동량을 줄이고, '보존'과 '재생'이라는 새로운 운동량을 만들어내야 합니다. 당구공이 부딪혀 각자 다른 방향으로 나아가듯, 우리는 격렬한 토론과 합의라는 '탄성 충돌'을 통해 지구 전체의 운동량 벡터를 지속가능한 방향으로 바꾸어야 합니다.</span></p>
+            <p class="lang-en"><strong>[English]</strong><button onclick="speakText(this)">🔊</button><span>Within the closed system of Earth, humanity possesses a huge momentum in the direction of 'destruction.' To change this direction, internal 'collisions' are necessary. Collisions between old industries and new technologies, between the older generation and the future generation, and between our inner selfishness and conscience. Through these collisions, we must reduce the destructive momentum and create a new momentum of 'conservation' and 'regeneration.' Just as billiard balls collide and move in different directions, we must change the entire momentum vector of the Earth towards sustainability through the 'elastic collision' of intense discussion and agreement.</span></p>
+            <p class="lang-ja"><strong>[日本語]</strong><button onclick="speakText(this)">🔊</button><span>地球という閉鎖系の中で、人類は「破壊」という方向に巨大な運動量を持っています。この方向を変えるには、内部の「衝突」が必要です。古い産業と新しい技術の衝突、旧世代と未来世代の衝突、そして私たちの内なる利己心と良心の衝突。これらの衝突を通じて、破壊的な運動量を減らし、「保全」と「再生」という新しい運動量を生み出さねばなりません。ビリヤードの球がぶつかってそれぞれ違う方向に進むように、私たちは激しい討論と合意という「弾性衝突」を通じて、地球全体の運動量ベクトルを持続可能な方向に変えるべきです。</span></p>
+        </div>
+
+        <div class="speech-block">
+            <h3>열역학 제1법칙의 발언</h3>
+            <div class="law-intro">
+                저는 열역학 제1법칙, 즉 에너지 보존의 또 다른 표현입니다. 시스템의 내부 에너지 변화는 열과 일의 차이와 같습니다(\DeltaU = Q - W).
+            </div>
+            <p class="lang-ko"><strong>[한국어]</strong><button onclick="speakText(this)">🔊</button><span>지구 시스템의 내부 에너지(\DeltaU)가 계속 증가하고 있습니다. 이것이 바로 '지구 온난화'입니다. 왜냐하면 온실가스로 인해 시스템에 들어오는 열(Q)은 늘어나는데, 인류가 지구를 위해 하는 긍정적인 '일(W)'은 너무나 적기 때문입니다. 지구의 온도를 낮추려면 어떻게 해야 할까요? 답은 제 공식 안에 있습니다. 들어오는 열(Q)을 줄이고, 즉 탄소 배출을 줄이고, 지구를 식히는 긍정적인 일(W)을 늘려야 합니다. 예를 들어 숲을 가꾸고, 에너지를 효율적으로 사용하는 것이죠. 공식은 거짓말을 하지 않습니다.</span></p>
+            <p class="lang-en"><strong>[English]</strong><button onclick="speakText(this)">🔊</button><span>The internal energy (\DeltaU) of the Earth system is continuously increasing. This is 'global warming.' It's because the heat (Q) entering the system due to greenhouse gases is increasing, while the positive 'work (W)' humanity does for the Earth is far too little. What must we do to lower the Earth's temperature? The answer is in my formula. We must reduce the incoming heat (Q) by cutting carbon emissions, and increase the positive work (W) that cools the Earth, such as cultivating forests and using energy efficiently. The formula does not lie.</span></p>
+            <p class="lang-ja"><strong>[日本語]</strong><button onclick="speakText(this)">🔊</button><span>地球システムの内部エネルギー(\DeltaU)は増え続けています。これこそが「地球温暖化」です。なぜなら、温室効果ガスによってシステムに入ってくる熱(Q)は増えているのに、人類が地球のために行う肯定的な「仕事(W)」があまりにも少ないからです。地球の温度を下げるにはどうすればよいでしょうか？答えは私の公式の中にあります。入ってくる熱(Q)を減らし、すなわち炭素排出を削減し、地球を冷やす肯定的な仕事(W)を増やすべきです。例えば、森を育て、エネルギーを効率的に使うことです。公式は嘘をつきません。</span></p>
+        </div>
+
+        <div class="speech-block">
+            <h3>열역학 제2법칙 (엔트로피 증가의 법칙)의 발언</h3>
+            <div class="law-intro">
+                저는 열역학 제2법칙, 엔트로피 증가의 법칙입니다. 가만히 두면, 모든 것은 무질서한 방향으로 흘러갑니다.
+            </div>
+            <p class="lang-ko"><strong>[한국어]</strong><button onclick="speakText(this)">🔊</button><span>질서정연한 숲이 불타 무질서한 잿더미가 되고, 깨끗한 물에 잉크 한 방울이 퍼져 흙탕물이 되는 것. 이것이 바로 엔트로피의 증가입니다. 지금 지구는 인간의 활동으로 인해 엔트로피가 급격히 증가하고 있습니다. 즉, 걷잡을 수 없이 무질서해지고 파괴되고 있다는 뜻입니다. 이 흐름에 맞서려면, 우리는 의식적인 '에너지'를 투입하여 질서를 만들어야 합니다. 쓰레기를 분리수거하고, 파괴된 생태계를 복원하는 모든 행위가 바로 엔트로피를 거스르는 위대한 노력입니다. 저절로 좋아지는 것은 아무것도 없습니다.</span></p>
+            <p class="lang-en"><strong>[English]</strong><button onclick="speakText(this)">🔊</button><span>An orderly forest burns into a disorderly pile of ash; a drop of ink spreads in clean water to make it murky. This is the increase of entropy. Right now, the Earth's entropy is rapidly increasing due to human activities. This means it is becoming uncontrollably disordered and destroyed. To fight this flow, we must input conscious 'energy' to create order. Every act of separating trash and restoring destroyed ecosystems is a great effort against entropy. Nothing gets better on its own.</span></p>
+            <p class="lang-ja"><strong>[日本語]</strong><button onclick="speakText(this)">🔊</button><span>整然とした森が燃えて無秩序な灰の山となり、きれいな水にインク一滴が広がって濁水となること。これこそがエントロピーの増大です。今、地球は人間の活動によってエントロピーが急激に増大しています。つまり、手の施しようもなく無秩序になり、破壊されているということです。この流れに逆らうには、私たちは意識的な「エネルギー」を投入して秩序を作り出さなければなりません。ゴミを分別収集し、破壊された生態系を復元するすべての行為が、まさにエントロピーに逆らう偉大な努力です。自然に良くなるものは何もありません。</span></p>
+        </div>
+        
+        <div class="speech-block">
+            <h3>쿨롱의 법칙의 발언</h3>
+            <div class="law-intro">
+                저는 쿨롱의 법칙입니다. 전하들 사이의 힘을 설명하죠. 같은 것끼리는 밀어내고, 다른 것끼리는 끌어당깁니다.
+            </div>
+            <p class="lang-ko"><strong>[한국어]</strong><button onclick="speakText(this)">🔊</button><span>'파괴적인 행동'을 (-)전하, '지속가능한 행동'을 (+)전하라고 해봅시다. 지금 지구에는 (-)전하가 너무 많아 서로를 밀어내며 갈등과 분열만 커지고 있습니다. 우리는 (+)전하, 즉 희망과 협력, 실천의 양을 늘려야 합니다. 그래서 (+)와 (-)가 서로를 끌어당겨 '중화'시키고, 궁극적으로는 (+)전하가 가득한 세상을 만들어 서로를 '끌어당기는' 힘, 즉 연대의 힘이 지배하게 해야 합니다. 또한, 행동과의 '거리'가 멀어지면 힘은 제곱으로 약해집니다. 멀리서 구경만 하지 말고, 가까이 다가가 행동해야 합니다.</span></p>
+            <p class="lang-en"><strong>[English]</strong><button onclick="speakText(this)">🔊</button><span>Let's call 'destructive actions' a (-) charge and 'sustainable actions' a (+) charge. Right now, there are too many (-) charges on Earth, repelling each other and increasing conflict and division. We must increase the amount of (+) charge—hope, cooperation, and action. Then, (+) and (-) will attract and 'neutralize' each other, and ultimately, we must create a world full of (+) charges so that the force of 'attraction,' the power of solidarity, prevails. Also, as the 'distance' from action increases, the force weakens exponentially. We must not just watch from afar; we must get closer and act.</span></p>
+            <p class="lang-ja"><strong>[日本語]</strong><button onclick="speakText(this)">🔊</button><span>「破壊的な行動」を(-)電荷、「持続可能な行動」を(+)電荷としましょう。今、地球には(-)電荷が多すぎて互いに反発し、対立と分裂ばかりが大きくなっています。私たちは(+)電荷、すなわち希望と協力、実践の量を増やさなければなりません。そうして(+)と(-)が互いに引き合って「中和」し、最終的には(+)電荷に満ちた世界を作り、互いを「引き合う」力、すなわち連帯の力が支配するようにすべきです。また、行動との「距離」が遠ざかると、力は二乗で弱まります。遠くから見物するのではなく、近くに寄って行動すべきです。</span></p>
+        </div>
+
+        <div class="speech-block chairperson">
+            <h3>폐회 발언: 상대성 원리</h3>
+            <div class="law-intro">
+                저는 상대성 원리입니다. 당신이 어디에 있든, 어떻게 움직이든, 물리 법칙은 모두에게 동일하게 적용됩니다.
+            </div>
+            <p class="lang-ko"><strong>[한국어]</strong><button onclick="speakText(this)">🔊</button><span>여러분, 부자 나라에 있든 가난한 나라에 있든, 거대한 기업의 총수이든 평범한 학생이든, 자연의 법칙은 우리 모두에게 공평하게 적용됩니다. 그 누구도 기후 변화의 결과를 피할 수 있는 특별한 '관성계'에 존재하지 않습니다. 우리가 배출한 탄소는 국경을 넘어 똑같이 대기를 데우고, 녹아내린 빙하는 차별 없이 모든 해안선을 위협합니다. '나만은 괜찮을 것'이라는 생각은 가장 위험한 착각입니다. 우리는 지구라는 시공간 안에서 함께 움직이는 운명 공동체입니다. 이 절대적인 진리를 깨닫는 것이, 지속가능한 미래를 향한 첫걸음이자 마지막 해답입니다.</span></p>
+            <p class="lang-en"><strong>[English]</strong><button onclick="speakText(this)">🔊</button><span>Everyone, whether you are in a rich country or a poor one, the head of a giant corporation or an ordinary student, the laws of nature apply equally to us all. No one exists in a special 'inertial frame' that can escape the consequences of climate change. The carbon we emit heats the atmosphere equally across borders, and the melting glaciers threaten all coastlines without discrimination. The thought 'I alone will be fine' is the most dangerous illusion. We are a community of destiny, moving together within the spacetime of Earth. Realizing this absolute truth is the first step and the final answer towards a sustainable future.</span></p>
+            <p class="lang-ja"><strong>[日本語]</strong><button onclick="speakText(this)">🔊</button><span>皆さん、豊かな国にいようと貧しい国にいようと、巨大企業のトップであろうと平凡な学生であろうと、自然の法則は私たち全員に公平に適用されます。誰一人として、気候変動の結果を逃れることができる特別な「慣性系」には存在しません。私たちが排出した炭素は国境を越えて等しく大気を暖め、溶け出した氷河は差別なくすべての海岸線を脅かします。「自分だけは大丈夫だろう」という考えは、最も危険な錯覚です。私たちは地球という時空の中で共に動く運命共同体なのです。この絶対的な真理を悟ることが、持続可能な未来への第一歩であり、最後の答えです。</span></p>
+        </div>
+
+    </div>
+</body>
+</html>
