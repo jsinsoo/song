@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>지구를 지켜라!</title>
+<link href="https://cdn.jsdelivr.net/gh/quiple/galmuri@latest/dist/galmuri.css" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#20225f;overflow:hidden;font-family:'Galmuri11','Galmuri9',monospace;user-select:none}
+#wrap{position:relative;width:100%;height:100%}
+canvas{position:absolute;inset:0;width:100%;height:100%}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+.title{position:absolute;left:5%;top:6%;font-size:min(15vw,26vh);line-height:1;color:#efcb4a;white-space:pre;font-weight:bold;
+ -webkit-text-stroke:min(1vw,1.8vh) #efcb4a;transform:rotate(-4deg);z-index:1}
+.title::before{content:attr(data-text);position:absolute;left:0;top:0;z-index:-1;color:#fff;
+ -webkit-text-stroke:min(3vw,5.4vh) #fff;text-shadow:.4vw .8vw 0 #fff}
+.sub{position:absolute;left:11%;bottom:14%;color:#fff;font-family:'Galmuri11',monospace;font-size:min(3.4vw,6vh);line-height:1.4}
+.btn{position:absolute;right:7%;width:min(32vw,50vh);padding:1.2vh 0;text-align:center;font-size:min(3.4vw,6vh);color:#7a5a00;
+ background:#efcb4a;border:min(1vw,1.6vh) solid #fff;border-radius:60px;cursor:pointer;transition:.15s}
+.btn:hover{transform:scale(1.07) rotate(-2deg)}
+#b1{bottom:27%}#b2{bottom:10%}
+#earthT{position:absolute;right:12%;top:26%;width:min(26vw,40vh);animation:fl 1.2s infinite alternate ease-in-out}
+@keyframes fl{to{transform:translate(-6px,8px) rotate(4deg)}}
+.bubble{position:absolute;right:15%;top:9%;background:#fff;color:#20225f;border-radius:28px;padding:1.4vh 2.6vw;font-size:min(3.4vw,6vh);font-family:'Galmuri11',monospace}
+.bubble::after{content:'';position:absolute;bottom:-2.6vh;right:22%;border:2vh solid transparent;border-top:3vh solid #fff;border-bottom:0;transform:skewX(-20deg)}
+#start .item{opacity:0;pointer-events:none}
+#start.in .item{opacity:1;pointer-events:auto}
+#start .item{transition:opacity .9s ease,transform .15s}
+#start.in .title{transition-delay:0s,0s}
+#start.in .sub{transition-delay:.9s,0s}
+#start.in #earthT,#start.in .bubble{transition-delay:1.4s,0s}
+#start.in #b1{transition-delay:1.9s,0s}
+#start.in #b2{transition-delay:2.3s,0s}
+.panel{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(88vw,640px);background:#2c2f7a;border:6px solid #fff;
+ border-radius:30px;padding:28px;color:#fff;text-align:center;font-size:min(4vw,22px);line-height:1.7}
+.panel h2{color:#efcb4a;font-size:1.6em;margin-bottom:10px}
+.panel .btn{position:static;margin:18px auto 0;width:60%;font-size:1.2em}
+#hud{position:absolute;top:10px;left:0;right:0;display:flex;justify-content:space-between;padding:0 20px;color:#fff;font-size:min(4vw,26px);pointer-events:none}
+#pbtn{position:absolute;top:52px;right:16px;width:48px;height:48px;border-radius:50%;background:#efcb4a;border:4px solid #fff;color:#7a5a00;font-size:22px;cursor:pointer;display:none;z-index:5;font-family:inherit}
+#pbtn:hover{transform:scale(1.1)}
+#msg{position:absolute;bottom:4%;width:100%;text-align:center;color:#fff;font-size:min(3.4vw,20px);opacity:.8;pointer-events:none}
+</style></head><body><div id="wrap">
+<canvas id="c"></canvas>
+
+<div id="start" class="screen on">
+ <div class="title item" data-text="지구를
+지켜라!">지구를
+지켜라!</div>
+ <div class="sub item">소행성 충돌로부터<br>&nbsp;&nbsp;&nbsp;&nbsp;지구를 지켜주세요^^</div>
+ <div class="bubble item">살려줘!!</div>
+ <svg class="item" id="earthT" viewBox="0 0 200 200"><circle cx="100" cy="100" r="80" fill="#62a8f5"/>
+  <path d="M35 80Q40 40 80 35Q100 50 70 80Q60 100 35 95Z" fill="#6cc25a"/>
+  <path d="M120 40Q170 30 175 70Q150 95 130 75Z" fill="#6cc25a"/>
+  <path d="M45 140Q70 120 100 135Q95 165 60 165Z" fill="#6cc25a"/>
+  <path d="M65 78l14 6-14 6M135 78l-14 6 14 6" stroke="#111" stroke-width="3" fill="none"/>
+  <ellipse cx="100" cy="105" rx="6" ry="9" fill="#e8b9a0" stroke="#111" stroke-width="2"/>
+  <path d="M20 60l-12-18M180 70l12-20M50 170l-8 20M150 170l8 20" stroke="#fff" stroke-width="3"/></svg>
+ <div class="btn item" id="b1">게임 시작</div>
+ <div class="btn item" id="b2">게임 설명</div>
+</div>
+
+<div id="help" class="screen"><div class="panel"><h2>게임 설명</h2>
+ 소행성이 지구를 향해 날아와요!<br>
+ <b>스페이스바 / 화면 터치 / 클릭</b>으로 배트를 휘둘러<br>
+ 소행성이 <b>배트 범위(노란 원)</b>에 들어왔을 때 쳐내세요.<br>
+ 타이밍은 <b>BAD / SOSO / GOOD / PERFECT</b> 4단계로 판정돼요. 점선에 가까울수록 높은 점수! 놓치면 지구 HP가 줄어요.<br>
+ HP 3개가 모두 사라지면 게임 오버!<br>⚠ 큰 소행성은 2~4번 연타해야 날아가고(충돌 시 HP 2 감소), 밝고 빠른 소행성은 점수가 2배!
+ <div class="btn" id="back">돌아가기</div></div></div>
+
+<div id="over" class="screen"><div class="panel"><h2>지구가 위험해요... 💥</h2>
+ <div id="fin"></div><div class="btn" id="again">다시 도전</div></div></div>
+
+<div id="pause" class="screen" style="background:rgba(10,10,50,.6)"><div class="panel"><h2>일시정지</h2>
+ <div class="btn" id="resume">이어하기</div><div class="btn" id="home" style="background:#fff">홈 화면으로</div></div></div>
+<button id="pbtn" title="일시정지 (P / Esc)">⏸</button>
+<div id="hud" style="display:none"><span id="sc"></span><span id="hp"></span></div>
+<div id="msg"></div>
+</div>
+<script>
+const cv=document.getElementById('c'),g=cv.getContext('2d');
+let W,H;function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight}rs();addEventListener('resize',rs);
+const $=id=>document.getElementById(id);
+const stars=Array.from({length:60},()=>({x:Math.random(),y:Math.random(),s:Math.random()*2+1,t:Math.random()*6}));
+let mode='menu',score=0,hp=3,asts=[],parts=[],pops=[],swing=0,spawnT=0,t=0,best=+localStorage.pe_best||0,level=1,combo=0;
+function show(id){['start','help','over','pause'].forEach(s=>$(s).classList.toggle('on',s===id));$('hud').style.display=(mode==='play'||mode==='pause')?'flex':'none';$('pbtn').style.display=mode==='play'?'block':'none'}
+function pauseGame(){if(mode!=='play')return;mode='pause';show('pause')}
+function resumeGame(){if(mode!=='pause')return;mode='play';last=performance.now();show('')}
+function goHome(){mode='menu';asts=[];parts=[];pops=[];show('start')}
+$('pbtn').onclick=e=>{e.stopPropagation();pauseGame()};
+$('resume').onclick=resumeGame;$('home').onclick=goHome;
+addEventListener('keydown',e=>{if(e.code==='KeyP'||e.code==='Escape'){mode==='play'?pauseGame():resumeGame()}});
+addEventListener('blur',pauseGame);
+$('b1').onclick=start;$('again').onclick=start;
+$('b2').onclick=()=>show('help');$('back').onclick=()=>show('start');
+function start(){introDone=true;mode='play';score=0;hp=3;asts=[];parts=[];pops=[];spawnT=0;level=1;combo=0;show('');hud();$('msg').textContent='스페이스바 / 터치로 배트를 휘두르세요!'}
+function hud(){$('sc').textContent='점수 '+score+' (Lv.'+level+')';$('hp').textContent='지구 HP '+'❤️'.repeat(hp)+'🖤'.repeat(3-hp)}
+const E=()=>({x:W/2,y:H*0.82,r:Math.min(W,H)*0.09});
+const RING=()=>E().r*2.6;
+function spawn(){const a=-Math.PI*(0.15+Math.random()*0.7);const d=Math.max(W,H)*0.7;const e=E();
+ const base=(0.9+level*0.18+Math.random()*0.5)*Math.min(W,H)/600*60*2.8;
+ const p=Math.random();let type='n',sp=base,r=14+Math.random()*14,hits=1;
+ const hasFast=asts.some(o=>o.type==='fast'&&!o.hit),hasBig=asts.some(o=>o.type==='big'&&!o.hit);
+ if(p<0.15&&!hasFast&&!hasBig){type='big';sp=base*0.55;r=Math.min(W,H)*0.07+10;hits=2+Math.floor(Math.random()*3)}
+ else if(p>=0.15&&p<0.32&&!hasBig){type='fast';sp=base*2.3;r=11}
+ asts.push({x:e.x+Math.cos(a)*d,y:e.y+Math.sin(a)*d,ang:a,sp,r,rot:0,hit:false,vx:0,vy:0,type,hits,maxHits:hits})}
+function swingNow(){if(mode!=='play'||swing>0)return;swing=0.25;$('msg').textContent='';
+ const e=E();let best=null;
+ asts.forEach(a=>{if(a.hit)return;const d=Math.hypot(a.x-e.x,a.y-e.y);if(d<RING()+a.r&&(!best||d<best.d))best={a,d}});
+ if(!best)return;
+ const a=best.a,target=RING()*0.85,tol=Math.max(RING()*0.07,a.sp*0.05),diff=best.d-target;
+ let j,pts,col;const ad=Math.abs(diff);
+ if(ad<=tol){j='PERFECT';pts=30;col='#efcb4a';combo++}
+ else if(ad<=tol*2){j='GOOD';pts=20;col='#7dff9a';combo++}
+ else if(ad<=tol*3.5){j='SOSO';pts=10;col='#7fd1ff';combo=0}
+ else{j='BAD';pts=5;col='#ff9a7a';combo=0}
+ if(a.type==='fast')pts*=2;
+ a.hits--;
+ const dx=a.x-e.x,dy=a.y-e.y,l=Math.hypot(dx,dy);
+ if(a.hits>0){const kb=a.type==='big'?RING()*1.1:RING()*0.22;a.x+=dx/l*kb;a.y+=dy/l*kb;score+=pts;
+  pops.push({x:a.x,y:a.y-a.r,t:1,s:j+' ('+a.hits+')',c:col});boom(a.x,a.y,'#fff',8)}
+ else{a.hit=true;a.vx=dx/l*1400;a.vy=dy/l*1400;
+  pts+=combo*2+(a.type==='big'?40:0);score+=pts;level=1+Math.floor(score/150);
+  pops.push({x:a.x,y:a.y-a.r,t:1,s:j+' +'+pts,c:col});boom(a.x,a.y,col,22)}
+ hud()}
+function boom(x,y,c,n){for(let i=0;i<n;i++){const r=Math.random()*6.28,s=100+Math.random()*300;parts.push({x,y,vx:Math.cos(r)*s,vy:Math.sin(r)*s,l:1,c})}}
+addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();swingNow()}});
+cv.addEventListener('pointerdown',swingNow);
+function drawEarth(){const e=E();g.save();g.translate(e.x,e.y);
+ g.fillStyle='#62a8f5';g.beginPath();g.arc(0,0,e.r,0,7);g.fill();g.fillStyle='#6cc25a';
+ [[-.4,-.3,.35],[.35,-.45,.3],[-.2,.45,.3]].forEach(p=>{g.beginPath();g.arc(p[0]*e.r,p[1]*e.r,p[2]*e.r,0,7);g.fill()});
+ g.strokeStyle='#111';g.lineWidth=2.5;g.beginPath();
+ if(hp<3){g.moveTo(-e.r*.4,-e.r*.1);g.lineTo(-e.r*.2,0);g.lineTo(-e.r*.4,e.r*.1);g.moveTo(e.r*.4,-e.r*.1);g.lineTo(e.r*.2,0);g.lineTo(e.r*.4,e.r*.1)}
+ else{g.arc(-e.r*.3,0,e.r*.08,0,7);g.moveTo(e.r*.38,0);g.arc(e.r*.3,0,e.r*.08,0,7)}
+ g.stroke();g.restore()}
+function drawBat(){const e=E();const p=swing>0?1-swing/0.25:0;
+ const a0=-Math.PI*0.95,a1=-Math.PI*0.05;const ang=swing>0?a0+(a1-a0)*p:a0;
+ g.save();g.translate(e.x,e.y);g.rotate(ang);
+ g.fillStyle='#c98a3b';g.strokeStyle='#fff';g.lineWidth=3;
+ g.beginPath();g.roundRect(e.r*.9,-6,RING()*0.95-e.r*.5,12,6);g.fill();g.stroke();
+ g.beginPath();g.roundRect(RING()*0.55,-10,RING()*0.5,20,10);g.fill();g.stroke();g.restore();
+ g.strokeStyle='rgba(239,203,74,.55)';g.setLineDash([8,8]);g.lineWidth=3;g.beginPath();g.arc(e.x,e.y,RING()*.85,Math.PI,0);g.stroke();g.setLineDash([])}
+function drawAst(a){
+ if(a.type==='fast'&&!a.hit){g.save();const L=a.r*7;const gr=g.createLinearGradient(a.x,a.y,a.x+Math.cos(a.ang)*L,a.y+Math.sin(a.ang)*L);
+  gr.addColorStop(0,'rgba(255,240,150,.9)');gr.addColorStop(1,'rgba(255,240,150,0)');g.strokeStyle=gr;g.lineWidth=a.r*1.2;g.lineCap='round';
+  g.beginPath();g.moveTo(a.x,a.y);g.lineTo(a.x+Math.cos(a.ang)*L,a.y+Math.sin(a.ang)*L);g.stroke();g.restore()}
+ g.save();g.translate(a.x,a.y);g.rotate(a.rot);
+ if(a.type==='fast'){g.shadowColor='#fff7a0';g.shadowBlur=30;g.fillStyle='#fffbd0';g.strokeStyle='#ffe14a'}
+ else if(a.type==='big'){g.fillStyle=a.hit?'#ddd':'#6e5a4e';g.strokeStyle='#fff'}
+ else{g.fillStyle=a.hit?'#ddd':'#9a8f86';g.strokeStyle='#fff'}
+ g.lineWidth=a.type==='big'?4:2;
+ g.beginPath();for(let i=0;i<9;i++){const r=a.r*(0.8+0.25*Math.sin(i*2.3));g.lineTo(Math.cos(i*.7)*r,Math.sin(i*.7)*r)}g.closePath();g.fill();g.stroke();
+ g.shadowBlur=0;g.fillStyle=a.type==='fast'?'#ffe98a':'#4f443d';
+ [[-.25,-.1,.2],[.3,.25,.15],[.1,-.4,.12]].forEach(c=>{g.beginPath();g.arc(a.r*c[0],a.r*c[1],a.r*c[2],0,7);g.fill()});
+ g.restore();
+ if(a.type==='big'&&!a.hit){g.fillStyle='#fff';g.font='bold '+Math.round(a.r*.8)+'px Galmuri11,monospace';g.textAlign='center';g.textBaseline='middle';g.fillText(a.hits,a.x,a.y);g.textBaseline='alphabetic'}}
+function drawStar(x,y,r){g.beginPath();for(let i=0;i<10;i++){const rr=i%2?r*.45:r,an=-Math.PI/2+i*Math.PI/5;g.lineTo(x+Math.cos(an)*rr,y+Math.sin(an)*rr)}g.closePath();g.fill()}
+let last=performance.now();
+let introDone=false,introEndT=0;
+setTimeout(()=>$('start').classList.add('in'),3200);
+setTimeout(()=>{introDone=true;introEndT=t},5500);
+function loop(n){const dt=Math.min(.05,(n-last)/1000);last=n;t+=dt;
+ g.fillStyle='#20225f';g.fillRect(0,0,W,H);
+ stars.forEach((s,i)=>{let f=1;if(i<10){f=Math.min(1,(t-0.4-i*0.28)/0.5);if(introDone&&introEndT===0)f=1}else if(!introDone)return;else f=introEndT?Math.min(1,(t-introEndT)/1.5):1;if(f<=0)return;g.fillStyle='rgba(255,255,255,'+f*(0.5+0.5*Math.sin(t*2+s.t))+')';drawStar(s.x*W,s.y*H,s.s*1.8+2)});
+ if(mode==='play'){
+  spawnT-=dt;if(spawnT<=0){spawn();spawnT=Math.max(.6,2-level*.18)+Math.random()*.6}
+  if(swing>0)swing-=dt;
+  const e=E();
+  asts.forEach(a=>{a.rot+=dt*3;
+   if(a.hit){a.x+=a.vx*dt;a.y+=a.vy*dt}
+   else{const dx=e.x-a.x,dy=e.y-a.y,l=Math.hypot(dx,dy);a.x+=dx/l*a.sp*dt;a.y+=dy/l*a.sp*dt;
+    if(l<e.r+a.r){a.dead=true;hp-=(a.type==='big'?2:1);hp=Math.max(0,hp);combo=0;boom(e.x,e.y-e.r,'#ff6b4a',30);pops.push({x:e.x,y:e.y-e.r*1.6,t:1,s:'쾅!!'});hud();
+     if(hp<=0){mode='over';$('fin').innerHTML='점수 <b>'+score+'</b><br>최고 기록 '+(best=Math.max(best,score))+'<br>소행성이 지구에 충돌했어요!';localStorage.pe_best=best;show('over')}}}
+   if(a.hit&&(a.x<-100||a.x>W+100||a.y<-100||a.y>H+100))a.dead=true});
+  asts=asts.filter(a=>!a.dead);
+  drawEarth();asts.forEach(drawAst);drawBat();
+ }else if(mode==='over'){drawEarth()}
+ else if(mode==='pause'){drawEarth();asts.forEach(drawAst);drawBat()}
+ parts.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.l-=dt*1.5;g.globalAlpha=Math.max(0,p.l);g.fillStyle=p.c;g.fillRect(p.x,p.y,5,5)});g.globalAlpha=1;
+ parts=parts.filter(p=>p.l>0);
+ pops.forEach(p=>{p.t-=dt;p.y-=40*dt;g.globalAlpha=Math.max(0,p.t);g.fillStyle=p.c||'#efcb4a';g.strokeStyle='#20225f';g.lineWidth=5;g.font='28px Galmuri11,monospace';g.textAlign='center';g.strokeText(p.s,p.x,p.y);g.fillText(p.s,p.x,p.y)});g.globalAlpha=1;
+ pops=pops.filter(p=>p.t>0);
+ requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+</script></body></html>
